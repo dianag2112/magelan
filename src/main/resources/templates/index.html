@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magelan</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="logo-container">
+        <img src="/magelan_index.jpg" alt="Magelan Logo" class="logo-image">
+    </div>
+
+    <div class="buttons">
+        <a class="btn login-btn" th:href="@{/login}" href="/login">Login</a>
+        <a class="btn register-btn" th:href="@{/register}" href="/register">Register</a>
+    </div>
+
+    <div class="cta">
+        <a class="btn cta-btn" th:href="@{/menu}" href="/menu">MENU</a>
+    </div>
+</div>
+</body>
+</html>

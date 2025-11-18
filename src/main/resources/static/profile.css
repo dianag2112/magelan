@@ -1,0 +1,142 @@
+.home-center {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    padding: 20px;
+}
+
+.panel.profile-panel {
+    background: rgba(20, 20, 20, 0.9);
+    padding: 28px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 760px;
+    color: #fff;
+    text-align: left;
+    border: 1px solid #222;
+}
+
+.title {
+    font-family: 'Pirata One', cursive;
+    font-size: 2.2rem;
+    margin-bottom: 24px;
+    color: #ff1a1a;
+    font-weight: normal;
+    text-align: center;
+}
+
+.profile-alert {
+    background: #102312;
+    border: 1px solid #1f8a3b;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    color: #a4e9b8;
+    font-size: 0.9rem;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-main {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.profile-avatar-wrap {
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ff1a1a;
+    box-shadow: 0 0 14px rgba(255, 0, 0, 0.5);
+}
+
+.profile-info {
+    flex: 1;
+    min-width: 220px;
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid #333;
+    font-size: 0.95rem;
+}
+
+.profile-row:last-child {
+    border-bottom: none;
+}
+
+.profile-row .label {
+    color: #b8b8b8;
+}
+
+.profile-row .value {
+    font-weight: 600;
+    color: #e3e3e3
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.btn {
+    font-family: 'Pirata One', cursive;
+    letter-spacing: 1px;
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    text-decoration: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.primary-btn {
+    background: #ff0000;
+    color: #fff;
+}
+
+.primary-btn:hover {
+    background: #cc0000;
+}
+
+.secondary-btn {
+    background: #444;
+    color: #fff;
+}
+
+.secondary-btn:hover {
+    background: #666;
+}
+
+@media (max-width: 640px) {
+    .panel.profile-panel {
+        padding: 22px;
+    }
+
+    .profile-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

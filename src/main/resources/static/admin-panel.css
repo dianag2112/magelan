@@ -1,0 +1,261 @@
+body.admin-body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    margin: 0;
+}
+
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.logo-container {
+    margin-bottom: 4px;
+}
+
+.logo-image {
+    width: 170px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.panel {
+    background: rgba(20, 20, 20, 0.9);
+    padding: 26px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 950px;
+    border: 1px solid #222;
+}
+
+.title {
+    font-family: 'Pirata One', cursive;
+    font-size: 2.1rem;
+    color: #ff1a1a;
+    text-align: center;
+    margin-bottom: 18px;
+    font-weight: normal;
+}
+
+.alert {
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+}
+
+.alert.success {
+    background: #102312;
+    border: 1px solid #1f8a3b;
+    color: #a4e9b8;
+}
+
+.alert.error {
+    background: #2b1212;
+    border: 1px solid #c0392b;
+    color: #ffb3b3;
+}
+
+.table-wrapper {
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.users-table th,
+.users-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #333;
+}
+
+.users-table th {
+    color: #ff4d4d;
+    font-weight: normal;
+    text-align: left;
+}
+
+.col-right {
+    text-align: right;
+}
+
+.role-badge {
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.role-admin {
+    background: rgba(255, 0, 0, 0.12);
+    border: 1px solid #ff4d4d;
+    color: #ffb3b3;
+}
+
+.role-user {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid #555;
+    color: #e0e0e0;
+}
+
+.inline-form {
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.btn-toggle {
+    font-family: 'Pirata One', cursive;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: #ff0000;
+    color: #fff;
+    letter-spacing: 1px;
+    transition: 0.25s;
+    min-width: 80px;
+    text-align: center;
+}
+
+.btn-toggle:hover {
+    background: #cc0000;
+}
+
+.btn-toggle.demote {
+    background: #444;
+}
+
+.btn-toggle.demote:hover {
+    background: #666;
+}
+
+.empty {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 16px;
+}
+
+.admin-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.btn-secondary {
+    font-family: 'Pirata One', cursive;
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    background: #444;
+    color: #fff;
+    letter-spacing: 1px;
+    transition: 0.25s;
+}
+
+.btn-secondary:hover {
+    background: #666;
+}
+
+@media (max-width: 640px) {
+    .panel {
+        padding: 20px;
+    }
+
+    .users-table th,
+    .users-table td {
+        font-size: 0.85rem;
+        padding: 6px;
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #555;
+    transition: .3s;
+    border-radius: 24px;
+    border: 1px solid #777;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 2px;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+    background-color: #1f8a3b;
+    border-color: #1f8a3b;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(22px);
+    background-color: #fff;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-buttons a {
+    text-decoration: none;
+}
+
+.action-buttons a:hover {
+    text-decoration: none;
+}
+
+.order-summary p,
+.order-info-grid p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+}
+
+.order-info-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+

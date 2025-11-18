@@ -1,0 +1,287 @@
+body.menu-body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+}
+
+.menu-header {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 1px solid #191919;
+    background: radial-gradient(circle at top, rgba(255, 0, 0, 0.12), transparent) #000;
+}
+
+.menu-logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.menu-logo-image {
+    width: 100px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
+}
+
+.menu-title-wrap {
+    text-align: center;
+}
+
+.menu-title {
+    font-family: 'Pirata One', cursive;
+    font-size: 2.1rem;
+    margin: 0;
+    letter-spacing: 2px;
+    color: #ff1a1a;
+    font-weight: normal;
+}
+
+.menu-subtitle {
+    font-size: 1rem;
+    color: #aaa;
+    margin-top: 4px;
+}
+
+.menu-main {
+    padding: 24px 24px 32px;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.menu-hero {
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.menu-hero-title {
+    font-family: 'Pirata One', cursive;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font-size: 2rem;
+    color: #ff1a1a;
+    margin-bottom: 8px;
+}
+
+.menu-hero-text {
+    font-size: 0.95rem;
+    color: #b3b3b3;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.menu-section {
+    margin-bottom: 32px;
+}
+
+.menu-section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.menu-section-title {
+    font-family: 'Pirata One', cursive;
+    font-weight: normal;
+    font-size: 1.6rem;
+    letter-spacing: 1.8px;
+    color: #ff1a1a;
+    margin: 0;
+}
+
+.menu-section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #ff0000, transparent);
+    opacity: 0.5;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+}
+
+.drinks-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.menu-card {
+    background: radial-gradient(circle at top left, rgba(255, 0, 0, 0.06), #050505);
+    border-radius: 10px;
+    padding: 14px 14px 10px;
+    border: 1px solid #262626;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.menu-card:hover {
+    transform: translateY(-2px);
+    border-color: #444;
+    box-shadow: 0 0 18px rgba(255, 0, 0, 0.25);
+    background: #080808;
+}
+
+.menu-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.menu-item-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.menu-item-price {
+    font-family: 'Pirata One', cursive;
+    font-size: 1.1rem;
+    color: #ff4d4d;
+}
+
+.menu-item-desc {
+    font-size: 0.85rem;
+    color: #b5b5b5;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.menu-card-actions {
+    margin-top: 6px;
+}
+
+.menu-add-form {
+    margin: 0;
+}
+
+.menu-add-btn {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #ff0000;
+    color: #fff;
+    font-family: 'Pirata One', cursive;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.menu-add-btn:hover {
+    background-color: #cc0000;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+}
+
+.menu-login-hint {
+    margin-top: 6px;
+    font-size: 0.75rem;
+    color: #ff9f9f;
+}
+
+.menu-login-hint a {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+.menu-login-hint a:hover {
+    text-decoration: underline;
+}
+
+.menu-footer {
+    padding: 12px 18px 20px;
+    text-align: center;
+    border-top: 1px solid #111;
+    background: #000;
+}
+
+.menu-footer-text {
+    font-size: 0.8rem;
+    color: #777;
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .menu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .drinks-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .menu-header {
+        padding: 16px;
+    }
+
+    .menu-logo-image {
+        width: 80px;
+    }
+
+    .menu-title {
+        font-size: 1.8rem;
+    }
+
+    .menu-main {
+        padding: 18px 16px 24px;
+    }
+
+    .menu-grid,
+    .drinks-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-hero-text {
+        font-size: 0.85rem;
+    }
+    .menu-admin-btn {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}
+
+.menu-admin-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.menu-admin-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #333;
+    color: #fff;
+    font-family: 'Pirata One', cursive;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.25s;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.menu-admin-btn:hover {
+    background-color: #555;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    text-decoration: none;
+}
+
