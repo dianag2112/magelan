@@ -23,7 +23,6 @@ import web.dto.RegisterRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -42,10 +41,6 @@ public class UserService implements UserDetailsService {
     @Transactional
     @CacheEvict(value = "users", allEntries = true)
     public User register(RegisterRequest registerRequest) {
-        Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
-        if (optionalUser.isPresent()) {
-            throw new RuntimeException("Username [%s] is already in use.".formatted(registerRequest.getUsername()));
-        }
         User user = User.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))

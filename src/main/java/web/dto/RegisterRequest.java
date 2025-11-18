@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import web.validation.PasswordMatches;
+import web.validation.UniqueUsername;
 
 @Builder
 @Getter
@@ -13,6 +14,7 @@ import web.validation.PasswordMatches;
 @PasswordMatches
 public class RegisterRequest {
 
+    @UniqueUsername
     @NotBlank
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 symbols.")
     private String username;
