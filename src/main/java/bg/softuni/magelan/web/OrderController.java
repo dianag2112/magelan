@@ -1,0 +1,164 @@
+package bg.softuni.magelan.web;
+
+import bg.softuni.magelan.order.model.Order;
+import bg.softuni.magelan.order.service.OrderService;
+import bg.softuni.magelan.payment.PaymentResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import bg.softuni.magelan.security.UserData;
+import bg.softuni.magelan.user.model.User;
+import bg.softuni.magelan.user.service.UserService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.UUID;
+
+@Controller
+@RequestMapping("/orders")
+public class OrderController {
+
+    private final UserService userService;
+    private final OrderService orderService;
+
+    @Autowired
+    public OrderController(UserService userService,
+                           OrderService orderService) {
+        this.userService = userService;
+        this.orderService = orderService;
+    }
+
+    @GetMapping
+    public ModelAndView getOrdersPage(@AuthenticationPrincipal UserData userData) {
+        User user = userService.getById(userData.getUserId());
+
+        Order order = orderService
+                .findPendingOrderByCustomerId(user.getId())
+                .orElseGet(() -> orderService.createPendingOrderForCustomer(user));
+
+        List<Order> pastOrders = orderService.getPastOrders(user.getId());
+
+        ModelAndView modelAndView = new ModelAndView("orders");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("orderItems", order.getItems());
+        modelAndView.addObject("products", orderService.getAvailableProducts());
+        modelAndView.addObject("totalAmount", orderService.calculateTotal(order));
+        modelAndView.addObject("pastOrders", pastOrders);
+        modelAndView.addObject("isAuthenticated", userData != null);
+        return modelAndView;
+    }
+
+
+    @PostMapping("/items")
+    public String addProductToOrder(@AuthenticationPrincipal UserData userData,
+                                    @RequestParam("productId") UUID productId,
+                                    @RequestParam("quantity") int quantity) {
+
+        if (userData == null) {
+            return "redirect:/login";
+        }
+
+        User user = userService.getById(userData.getUserId());
+        orderService.addProductToCustomerOrder(user, productId, quantity);
+
+        return "redirect:/orders";
+    }
+
+    @DeleteMapping("/items/{itemId}")
+    public String removeItem(@AuthenticationPrincipal UserData userData,
+                             @PathVariable("itemId") UUID itemId) {
+
+        UUID userId = userData.getUserId();
+        orderService.removeItemFromOrder(userId, itemId);
+
+        return "redirect:/orders";
+    }
+
+    @PostMapping("/submit")
+    public String submitOrder(@AuthenticationPrincipal UserData userData,
+                              @RequestParam("fullName") String fullName,
+                              @RequestParam("phone") String phone,
+                              @RequestParam("address") String address,
+                              @RequestParam(value = "notes", required = false) String notes,
+                              RedirectAttributes redirectAttributes) {
+
+        if (userData == null) {
+            return "redirect:/login";
+        }
+
+        UUID userId = userData.getUserId();
+
+        PaymentResponse payment = orderService.startPaymentForCurrentOrder(
+                userId,
+                fullName,
+                phone,
+                address,
+                notes
+        );
+
+        redirectAttributes.addFlashAttribute(
+                "orderMessage",
+                "Your order is ready. Please complete the payment."
+        );
+
+        return "redirect:/orders/payment/" + payment.getId();
+    }
+
+    @GetMapping("/payment/{paymentId}")
+    public ModelAndView showPaymentPage(@PathVariable("paymentId") UUID paymentId,
+                                        @AuthenticationPrincipal UserData userData) {
+
+        PaymentResponse payment = orderService.getPaymentById(paymentId);
+
+        ModelAndView mav = new ModelAndView("payment");
+        mav.addObject("payment", payment);
+        mav.addObject("isAuthenticated", userData != null);
+        return mav;
+    }
+
+    @PostMapping("/payment/{paymentId}/process")
+    public String processPayment(@PathVariable("paymentId") UUID paymentId,
+                                 RedirectAttributes redirectAttributes) {
+
+        PaymentResponse updated = orderService.processPayment(paymentId);
+
+        if ("PAID".equalsIgnoreCase(updated.getStatus())) {
+            redirectAttributes.addFlashAttribute(
+                    "orderMessage",
+                    "Payment completed. Thank you! Your order was submitted."
+            );
+        } else {
+            redirectAttributes.addFlashAttribute(
+                    "orderMessage",
+                    "Payment status: " + updated.getStatus()
+            );
+        }
+
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/{orderId}")
+    public ModelAndView viewOrder(@AuthenticationPrincipal UserData userData,
+                                  @PathVariable("orderId") UUID orderId) {
+        if (userData == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        User user = userService.getById(userData.getUserId());
+        Order order = orderService.getOrderById(orderId);
+
+        if (!order.getCustomer().getId().equals(user.getId())) {
+            throw new IllegalStateException("You are not allowed to view this order.");
+        }
+
+        PaymentResponse payment = orderService.getPaymentForOrder(orderId);
+
+        ModelAndView modelAndView = new ModelAndView("order-details-user");
+        modelAndView.addObject("order", order);
+        modelAndView.addObject("payment", payment);
+        return modelAndView;
+    }
+
+}

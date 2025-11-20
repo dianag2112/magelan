@@ -237,3 +237,29 @@ select.input:hover {
         font-size: 0.9rem;
     }
 }
+
+.alert.success {
+    background: #102312;
+    border: 1px solid #1f8a3b;
+    color: #a4e9b8;
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+}
+
+.payment-summary {
+    background: #111;
+    border-radius: 8px;
+    border: 1px solid #333;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.btn-secondary.btn-small {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+}
+
+
