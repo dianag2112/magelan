@@ -36,7 +36,7 @@
                     <span class="label">Status</span>
                     <span class="value">
                         <span class="status-badge"
-                              th:classappend="${payment.status} == 'PAID' ? ' status-paid' :
+                              th:classappend="${payment.status} == 'SUCCESSFUL' ? ' status-successful' :
                                               (${payment.status} == 'PENDING' ? ' status-pending' : ' status-other')"
                               th:text="${payment.status}">
                             PENDING
@@ -69,23 +69,35 @@
                 </p>
             </div>
 
-            <div class="payment-message" th:if="${payment.status != 'PAID'}">
+            <div class="payment-message" th:if="${payment.status != 'SUCCESSFUL'}">
                 <p>Please confirm your payment to complete the order.</p>
             </div>
 
-            <div class="payment-message success" th:if="${payment.status == 'PAID'}">
+            <div class="payment-message success" th:if="${payment.status == 'SUCCESSFUL'}">
                 <p>This payment has been completed. Thank you!</p>
             </div>
 
             <div class="payment-actions">
-                <form th:if="${payment.status != 'PAID'}"
+                <form th:if="${payment.status != 'SUCCESSFUL'}"
                       th:action="@{|/orders/payment/${payment.id}/process|}"
                       method="post" class="inline-form">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                     <button type="submit" class="btn-primary">Pay now</button>
                 </form>
 
-                <a th:href="@{/orders}" href="/orders" class="btn-secondary">Back to my orders</a>
+                <form th:if="${payment != null and payment.status != 'PAID' and payment.status != 'SUCCESSFUL'}"
+                      th:action="@{/orders/cancel}"
+                      method="post" class="inline-form"
+                      onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <input type="hidden" name="orderId" th:value="${payment.orderId}">
+                    <button type="submit" class="btn-secondary">Cancel order</button>
+                </form>
+
+                <a th:if="${payment != null and (payment.status == 'PAID' or payment.status == 'SUCCESSFUL')}"
+                   th:href="@{/orders}" href="/orders" class="btn-secondary">
+                    Back to my orders
+                </a>
             </div>
         </div>
     </section>

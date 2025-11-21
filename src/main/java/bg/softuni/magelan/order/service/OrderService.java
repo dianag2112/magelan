@@ -241,7 +241,7 @@ public class OrderService {
         Order order = orderRepository.findByPaymentId(paymentId)
                 .orElseThrow(() -> new IllegalStateException("Order not found for payment " + paymentId));
 
-        if ("PAID".equalsIgnoreCase(updated.getStatus())) {
+        if ("SUCCESSFUL".equalsIgnoreCase(updated.getStatus())) {
             order.setOrderStatus(OrderStatus.SUBMITTED);
         }
 
@@ -255,6 +255,22 @@ public class OrderService {
     }
 
     public PaymentResponse getPaymentForOrder(UUID orderId) {
-        return null;
+        try {
+            return paymentClient.getPaymentByOrderId(orderId);
+        } catch (FeignException.NotFound e) {
+            return null;
+        }
+    }
+
+    @Transactional
+    public void cancelOrder(UUID orderId, UUID userId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
+        if (!order.getCustomer().getId().equals(userId)) {
+            throw new IllegalStateException("You are not allowed to cancel this order.");
+        }
+
+        orderRepository.delete(order);
     }
 }

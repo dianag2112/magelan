@@ -38,6 +38,10 @@ public class OrderController {
                 .findPendingOrderByCustomerId(user.getId())
                 .orElseGet(() -> orderService.createPendingOrderForCustomer(user));
 
+        if (order.getPaymentId() != null) {
+            return new ModelAndView("redirect:/orders/payment/" + order.getPaymentId());
+        }
+
         List<Order> pastOrders = orderService.getPastOrders(user.getId());
 
         ModelAndView modelAndView = new ModelAndView("orders");
@@ -54,17 +58,29 @@ public class OrderController {
     @PostMapping("/items")
     public String addProductToOrder(@AuthenticationPrincipal UserData userData,
                                     @RequestParam("productId") UUID productId,
-                                    @RequestParam("quantity") int quantity) {
+                                    @RequestParam("quantity") int quantity,
+                                    RedirectAttributes redirectAttributes) {
 
         if (userData == null) {
             return "redirect:/login";
         }
 
         User user = userService.getById(userData.getUserId());
+
+        Order pending = orderService.findPendingOrderByCustomerId(user.getId()).orElse(null);
+        if (pending != null && pending.getPaymentId() != null) {
+            redirectAttributes.addFlashAttribute(
+                    "orderMessage",
+                    "You have already submitted this order."
+            );
+            return "redirect:/orders";
+        }
+
         orderService.addProductToCustomerOrder(user, productId, quantity);
 
         return "redirect:/orders";
     }
+
 
     @DeleteMapping("/items/{itemId}")
     public String removeItem(@AuthenticationPrincipal UserData userData,
@@ -161,4 +177,18 @@ public class OrderController {
         return modelAndView;
     }
 
+    @PostMapping("/cancel")
+    public String cancelOrder(@AuthenticationPrincipal UserData userData,
+                              @RequestParam("orderId") UUID orderId,
+                              RedirectAttributes redirectAttributes) {
+
+        if (userData == null) {
+            return "redirect:/login";
+        }
+
+        orderService.cancelOrder(orderId, userData.getUserId());
+        redirectAttributes.addFlashAttribute("orderMessage", "Order has been cancelled.");
+
+        return "redirect:/orders";
+    }
 }
