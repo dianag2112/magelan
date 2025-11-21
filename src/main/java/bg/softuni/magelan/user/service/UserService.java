@@ -109,6 +109,7 @@ public class UserService implements UserDetailsService {
         return new UserData(user.getId(), username, user.getPassword(), user.getRole(), user.isActive());
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void toggleActive(UUID userId) {
         User user = getById(userId);
 
