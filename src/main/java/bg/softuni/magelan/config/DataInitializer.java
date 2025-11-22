@@ -71,6 +71,10 @@ public class DataInitializer implements CommandLineRunner {
         create("Soft Drinks",
                 "Selection of bottled soft drinks.",
                 "2.90", ProductCategory.DRINK, now);
+
+        create("Caribbean Rum",
+                "Warm, golden Caribbean rum with a hint of adventure. Yo-ho-ho in a glass.",
+                "5.90", ProductCategory.DRINK, now);
     }
 
     private void create(String name, String desc, String price,
