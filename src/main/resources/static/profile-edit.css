@@ -110,3 +110,49 @@
 .back-actions {
     margin-top: 8px;
 }
+
+.form-group input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 42px;
+    height: 22px;
+    background-color: #ccc;
+    border-radius: 22px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background-color .3s;
+    border: 1px solid #aaa;
+    vertical-align: middle;
+}
+
+.form-group input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 2px;
+    top: 1px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform .3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.form-group input[type="checkbox"]:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.form-group input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+}
+
+.delete-btn {
+    background: #8b0000;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background: #b00000;
+}

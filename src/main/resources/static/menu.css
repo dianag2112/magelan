@@ -285,3 +285,64 @@ body.menu-body {
     text-decoration: none;
 }
 
+.menu-alert {
+    background: #102312;
+    border: 1px solid #1f8a3b;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    color: #a4e9b8;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.menu-orders-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.menu-orders-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff0000, #b30000);
+    box-shadow: 0 0 14px rgba(255, 0, 0, 0.5);
+    color: #fff;
+    font-family: 'Pirata One', cursive;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.menu-orders-btn:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #cc0000, #990000);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+}
+
+.menu-orders-icon {
+    font-size: 1.1rem;
+}
+
+.menu-orders-label {
+    padding-top: 2px;
+}
+
+.menu-add-btn-disabled {
+    background-color: #444;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.menu-add-btn-disabled:hover {
+    background-color: #444;
+    box-shadow: none;
+    transform: none;
+}

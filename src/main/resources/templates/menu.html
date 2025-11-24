@@ -25,11 +25,24 @@
 </header>
 
 <main class="menu-main">
+        <div th:if="${orderMessage}" class="menu-alert">
+            <p th:text="${orderMessage}">Item added to your order.</p>
+        </div>
     <section class="menu-hero">
         <h2 class="menu-hero-title">Tonight's Voyage</h2>
         <p class="menu-hero-text">
             Explore our selection of tavern favorites.
         </p>
+
+        <div class="menu-orders-actions"
+             th:if="${#authorization.expression('hasRole(''USER'')')}">
+            <a th:href="@{/orders}" href="/orders" class="menu-orders-btn">
+                <span class="menu-orders-icon">🧾</span>
+                <span class="menu-orders-label">My Orders</span>
+            </a>
+        </div>
+
+
         <div class="menu-admin-actions"
              th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
             <a th:href="@{/admin/products}" href="/admin/products" class="menu-admin-btn">
@@ -53,18 +66,29 @@
                 <p class="menu-item-desc"
                    th:text="${p.description}">Starter description.</p>
 
-                <div th:if="${isAuthenticated}" class="menu-card-actions">
+                <div th:if="${p.active}">
+                <div th:if="${#authorization.expression('hasRole(''USER'')')}"
+                     class="menu-card-actions">
                     <form th:action="@{/orders/items}" method="post" class="menu-add-form">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <input type="hidden" name="productId" th:value="${p.id}">
                         <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="returnTo" value="menu"/>
                         <button type="submit" class="menu-add-btn">Add to Order</button>
                     </form>
                 </div>
 
-                <p th:if="${!isAuthenticated}" class="menu-login-hint">
+                <p th:if="${not #authorization.expression('isAuthenticated()')}"
+                   class="menu-login-hint">
                     <a th:href="@{/login}" href="/login">Login</a> to order this dish.
                 </p>
+
+                    <div th:if="${!p.active}" class="menu-card-actions">
+                        <button type="button" class="menu-add-btn menu-add-btn-disabled" disabled>
+                            Currently unavailable
+                        </button>
+                    </div>
+                </div>
             </article>
         </div>
     </section>
@@ -84,18 +108,28 @@
                 <p class="menu-item-desc"
                    th:text="${p.description}">Main description.</p>
 
-                <div th:if="${isAuthenticated}" class="menu-card-actions">
+                <div th:if="${p.active}">
+                <div th:if="${#authorization.expression('hasRole(''USER'')')}"
+                     class="menu-card-actions">
                     <form th:action="@{/orders/items}" method="post" class="menu-add-form">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <input type="hidden" name="productId" th:value="${p.id}">
                         <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="returnTo" value="menu"/>
                         <button type="submit" class="menu-add-btn">Add to Order</button>
                     </form>
                 </div>
 
-                <p th:if="${!isAuthenticated}" class="menu-login-hint">
+                <p th:if="${not #authorization.expression('isAuthenticated()')}"
+                   class="menu-login-hint">
                     <a th:href="@{/login}" href="/login">Login</a> to order this dish.
                 </p>
+                    <div th:if="${!p.active}" class="menu-card-actions">
+                        <button type="button" class="menu-add-btn menu-add-btn-disabled" disabled>
+                            Currently unavailable
+                        </button>
+                    </div>
+                </div>
             </article>
         </div>
     </section>
@@ -115,18 +149,29 @@
                 <p class="menu-item-desc"
                    th:text="${p.description}">Dessert description.</p>
 
-                <div th:if="${isAuthenticated}" class="menu-card-actions">
+                <div th:if="${p.active}">
+                <div th:if="${#authorization.expression('hasRole(''USER'')')}"
+                     class="menu-card-actions">
                     <form th:action="@{/orders/items}" method="post" class="menu-add-form">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <input type="hidden" name="productId" th:value="${p.id}">
                         <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="returnTo" value="menu"/>
                         <button type="submit" class="menu-add-btn">Add to Order</button>
                     </form>
                 </div>
 
-                <p th:if="${!isAuthenticated}" class="menu-login-hint">
+                <p th:if="${not #authorization.expression('isAuthenticated()')}"
+                   class="menu-login-hint">
                     <a th:href="@{/login}" href="/login">Login</a> to order this dish.
                 </p>
+
+                    <div th:if="${!p.active}" class="menu-card-actions">
+                        <button type="button" class="menu-add-btn menu-add-btn-disabled" disabled>
+                            Currently unavailable
+                        </button>
+                    </div>
+                </div>
             </article>
         </div>
     </section>
@@ -146,18 +191,29 @@
                 <p class="menu-item-desc"
                    th:text="${p.description}">Drink description.</p>
 
-                <div th:if="${isAuthenticated}" class="menu-card-actions">
+                <div th:if="${p.active}">
+                <div th:if="${#authorization.expression('hasRole(''USER'')')}"
+                     class="menu-card-actions">
                     <form th:action="@{/orders/items}" method="post" class="menu-add-form">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <input type="hidden" name="productId" th:value="${p.id}">
                         <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="returnTo" value="menu"/>
                         <button type="submit" class="menu-add-btn">Add to Order</button>
                     </form>
                 </div>
 
-                <p th:if="${!isAuthenticated}" class="menu-login-hint">
-                    <a th:href="@{/login}" href="/login">Login</a> to order this drink.
+                <p th:if="${not #authorization.expression('isAuthenticated()')}"
+                   class="menu-login-hint">
+                    <a th:href="@{/login}" href="/login">Login</a> to order this dish.
                 </p>
+
+                    <div th:if="${!p.active}" class="menu-card-actions">
+                        <button type="button" class="menu-add-btn menu-add-btn-disabled" disabled>
+                            Currently unavailable
+                        </button>
+                    </div>
+                </div>
             </article>
         </div>
     </section>

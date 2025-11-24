@@ -2,6 +2,7 @@ package bg.softuni.magelan.web;
 
 import bg.softuni.magelan.order.model.Order;
 import bg.softuni.magelan.order.service.OrderService;
+import bg.softuni.magelan.product.service.ProductService;
 import bg.softuni.magelan.payment.PaymentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,12 +23,15 @@ public class OrderController {
 
     private final UserService userService;
     private final OrderService orderService;
+    private final ProductService productService;
 
     @Autowired
     public OrderController(UserService userService,
-                           OrderService orderService) {
+                           OrderService orderService,
+                           ProductService productService) {
         this.userService = userService;
         this.orderService = orderService;
+        this.productService = productService;
     }
 
     @GetMapping
@@ -59,6 +63,7 @@ public class OrderController {
     public String addProductToOrder(@AuthenticationPrincipal UserData userData,
                                     @RequestParam("productId") UUID productId,
                                     @RequestParam("quantity") int quantity,
+                                    @RequestParam(value = "returnTo", required = false, defaultValue = "menu") String returnTo,
                                     RedirectAttributes redirectAttributes) {
 
         if (userData == null) {
@@ -76,9 +81,20 @@ public class OrderController {
             return "redirect:/orders";
         }
 
+        String productName = productService.getById(productId).getName();
+
         orderService.addProductToCustomerOrder(user, productId, quantity);
 
-        return "redirect:/orders";
+        redirectAttributes.addFlashAttribute(
+                "orderMessage",
+                productName + " added to your order."
+        );
+
+        if ("orders".equalsIgnoreCase(returnTo)) {
+            return "redirect:/orders";
+        } else {
+            return "redirect:/menu";
+        }
     }
 
 

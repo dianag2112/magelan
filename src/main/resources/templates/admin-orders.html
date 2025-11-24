@@ -28,10 +28,6 @@
             <p th:text="${error}">Error</p>
         </div>
 
-        <div class="admin-actions">
-            <a th:href="@{/admin/panel}" class="btn-secondary">Back to Admin Panel</a>
-        </div>
-
         <div class="history-section" th:if="${submittedOrders != null and !#lists.isEmpty(submittedOrders)}">
             <h2 class="subtitle">Submitted Orders</h2>
             <div class="table-wrapper">

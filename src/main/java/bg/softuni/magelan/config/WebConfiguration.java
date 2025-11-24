@@ -42,6 +42,7 @@ public class WebConfiguration implements WebMvcConfigurer {
                         ).permitAll()
                         .requestMatchers("/admin/panel").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/orders/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

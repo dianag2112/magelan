@@ -69,6 +69,7 @@
             <h2 class="subtitle">Add from Menu</h2>
             <form th:action="@{/orders/items}" method="post" class="add-form">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <input type="hidden" name="returnTo" value="orders"/>
 
                 <div class="add-form-row">
                     <label for="product" class="label">Item</label>

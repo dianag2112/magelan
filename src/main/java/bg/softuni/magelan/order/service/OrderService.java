@@ -112,10 +112,10 @@ public class OrderService {
                     return new IllegalArgumentException("Order not found");
                 });
 
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findByIdAndActiveTrue(productId)
                 .orElseThrow(() -> {
-                    log.warn("Product {} not found when trying to add to order {}", productId, orderId);
-                    return new IllegalArgumentException("Product not found");
+                    log.warn("Inactive or missing product {} requested for order {}", productId, orderId);
+                    return new IllegalArgumentException("Product is not available.");
                 });
 
         OrderItem existingItem = order.getItems().stream()

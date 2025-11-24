@@ -27,7 +27,7 @@ public class ProductService {
 
     public List<Product> getByCategory(ProductCategory category) {
         log.debug("Fetching products in category {}", category);
-        return productRepository.findAllByActiveTrueAndCategoryOrderByNameAsc(category);
+        return productRepository.findAllByCategoryOrderByNameAsc(category);
     }
 
     public List<Product> getAll() {
@@ -86,17 +86,9 @@ public class ProductService {
     }
 
     public void delete(UUID id) {
-        log.info("Soft-deleting product {}", id);
-
-        Product product = getById(id);
-
-        product.setActive(false);
-        product.setUpdatedOn(LocalDateTime.now());
-
-        productRepository.save(product);
-
-        log.info("Product {} archived (set active = false).", id);
-    }
+            log.info("Hard deleting product {}", id);
+            productRepository.deleteById(id);
+        }
 
     public ProductForm toForm(Product product) {
         log.debug("Converting product {} to ProductForm DTO", product.getId());
