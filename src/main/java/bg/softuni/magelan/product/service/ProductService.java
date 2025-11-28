@@ -20,11 +20,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getAvailableProducts() {
-        log.debug("Fetching all active products.");
-        return productRepository.findAllByActiveTrueOrderByNameAsc();
-    }
-
     public List<Product> getByCategory(ProductCategory category) {
         log.debug("Fetching products in category {}", category);
         return productRepository.findAllByCategoryOrderByNameAsc(category);

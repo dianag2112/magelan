@@ -1,0 +1,182 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container {
+    margin-bottom: 16px;
+}
+
+.logo-image {
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.panel {
+    background: rgba(20, 20, 20, 0.9);
+    padding: 26px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 640px;
+    border: 1px solid #222;
+}
+
+.title {
+    font-family: 'Pirata One', cursive;
+    font-size: 2.1rem;
+    color: #ff1a1a;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.form-wrapper {
+    margin-bottom: 24px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #0f0f0f;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+}
+
+.form-input:focus {
+    border-color: #ff0000;
+    box-shadow: 0 0 5px #ff0000;
+    outline: none;
+}
+
+.form-textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.btn {
+    font-family: 'Pirata One', cursive;
+    letter-spacing: 2px;
+    display: inline-block;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: normal;
+    transition: 0.3s;
+    width: 100%;
+    text-align: center;
+}
+
+.save-btn {
+    background: #ff0000;
+    color: #fff;
+}
+
+.save-btn:hover {
+    background: #cc0000;
+}
+
+.back-btn {
+    background: #444;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.back-btn:hover {
+    background: #666;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.back-actions {
+    margin-top: 8px;
+}
+
+.error {
+    color: #ff5555;
+    margin-top: 4px;
+    font-size: 0.8rem;
+}
+
+.alert.success {
+    background: #102312;
+    border: 1px solid #1f8a3b;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    color: #a4e9b8;
+    font-size: 0.9rem;
+}
+
+.history-section {
+    margin-top: 10px;
+}
+
+.subtitle {
+    font-family: 'Pirata One', cursive;
+    font-size: 1.5rem;
+    color: #ff1a1a;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: normal;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.bookings-table th,
+.bookings-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #333;
+}
+
+.bookings-table th {
+    color: #ff4d4d;
+    font-weight: normal;
+    text-align: left;
+}
+
+@media (max-width: 640px) {
+    .panel {
+        padding: 20px;
+    }
+}

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Table — Magelan</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css">
+    <link rel="stylesheet" th:href="@{/book-table.css}" href="/book-table.css">
+</head>
+<body>
+<div class="container">
+    <div class="logo-container">
+        <a th:href="@{/home}">
+            <img src="/magelan-index.jpg" alt="Magelan Logo" class="logo-image">
+        </a>
+    </div>
+
+    <section class="panel">
+        <h1 class="title">Book a Table</h1>
+
+        <div th:if="${message != null and !#strings.isEmpty(message)}"
+             class="alert success">
+            <p th:text="${message}">Your booking request was submitted.</p>
+        </div>
+
+        <div class="form-wrapper">
+            <form th:action="@{/book-table}"
+                  method="post"
+                  th:object="${bookTableRequest}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                <div class="form-group">
+                    <label for="date" class="form-label">Date</label>
+                    <input id="date" type="date" class="form-input"
+                           th:field="*{date}">
+                    <div class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">
+                        Date error
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="time" class="form-label">Time</label>
+                    <input id="time" type="time" class="form-input"
+                           th:field="*{time}">
+                    <div class="error" th:if="${#fields.hasErrors('time')}" th:errors="*{time}">
+                        Time error
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="guests" class="form-label">Guests</label>
+                    <input id="guests" type="number" min="1" max="20"
+                           class="form-input" th:field="*{guests}">
+                    <div class="error" th:if="${#fields.hasErrors('guests')}" th:errors="*{guests}">
+                        Guests error
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input id="phone" type="text" class="form-input"
+                           th:field="*{phone}" placeholder="+359...">
+                    <div class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                        Phone error
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes" class="form-label">Notes (optional)</label>
+                    <textarea id="notes" class="form-input form-textarea"
+                              th:field="*{notes}"
+                              placeholder="Allergies, special occasion, seating preference..."></textarea>
+                    <div class="error" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}">
+                        Notes error
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn save-btn">Send Booking Request</button>
+                </div>
+            </form>
+
+            <div class="actions back-actions">
+                <a th:href="@{/home}" class="btn back-btn">Back to Home</a>
+            </div>
+        </div>
+
+        <div class="history-section"
+             th:if="${upcomingBookings != null and !#lists.isEmpty(upcomingBookings)}">
+            <h2 class="subtitle">Your Upcoming Bookings</h2>
+            <div class="table-wrapper">
+                <table class="bookings-table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Guests</th>
+                        <th>Notes</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="b : ${upcomingBookings}">
+                        <td th:text="${#temporals.format(b.date, 'dd.MM.yyyy')}">01.01.2025</td>
+                        <td th:text="${b.time}">19:00</td>
+                        <td th:text="${b.guests}">2</td>
+                        <td th:text="${b.notes} ?: '-'">Anniversary</td>
+                        <td th:text="${b.status}">PENDING</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="history-section"
+             th:if="${pastBookings != null and !#lists.isEmpty(pastBookings)}">
+            <h2 class="subtitle">Your Past Bookings</h2>
+            <div class="table-wrapper">
+                <table class="bookings-table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Guests</th>
+                        <th>Notes</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="b : ${pastBookings}">
+                        <td th:text="${#temporals.format(b.date, 'dd.MM.yyyy')}">01.01.2025</td>
+                        <td th:text="${b.time}">19:00</td>
+                        <td th:text="${b.guests}">2</td>
+                        <td th:text="${b.notes} ?: '-'">Anniversary</td>
+                        <td th:text="${b.status}">PENDING</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</div>
+</body>
+</html>

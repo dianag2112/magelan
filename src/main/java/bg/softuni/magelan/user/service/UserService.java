@@ -31,15 +31,12 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final OrderService orderService;
 
     @Autowired
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder,
-                       OrderService orderService) {
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.orderService = orderService;
     }
 
     @Transactional
