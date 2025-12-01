@@ -1,9 +1,15 @@
 package bg.softuni.magelan.user.service;
 
+import bg.softuni.magelan.exception.UserNotFoundException;
+import bg.softuni.magelan.security.UserData;
+import bg.softuni.magelan.user.model.User;
+import bg.softuni.magelan.user.model.UserRole;
+import bg.softuni.magelan.user.repository.UserRepository;
+import bg.softuni.magelan.web.dto.EditProfileRequest;
+import bg.softuni.magelan.web.dto.RegisterRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import bg.softuni.magelan.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,12 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import bg.softuni.magelan.security.UserData;
-import bg.softuni.magelan.user.model.User;
-import bg.softuni.magelan.user.model.UserRole;
-import bg.softuni.magelan.user.repository.UserRepository;
-import bg.softuni.magelan.web.dto.EditProfileRequest;
-import bg.softuni.magelan.web.dto.RegisterRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,33 +55,21 @@ public class UserService implements UserDetailsService {
 
         user = userRepository.save(user);
 
-        log.info("User {} registered successfully with ID {}", registerRequest.getUsername(), user.getId());
+        log.info("User {} registered successfully with ID {}",
+                registerRequest.getUsername(), user.getId());
         return user;
     }
 
     @Cacheable("users")
     public List<User> getAll() {
-        log.debug("Fetching all users (may be served from cache).");
         return userRepository.findAll();
     }
 
-    public User getByUsername(String username) {
-        log.debug("Fetching user by username {}", username);
-
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> {
-                    log.warn("User with username {} not found.", username);
-                    return new RuntimeException("Username [%s] is not found.".formatted(username));
-                });
-    }
-
     public User getById(UUID id) {
-        log.debug("Fetching user by ID {}", id);
-
         return userRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("User with ID {} not found.", id);
-                    return new RuntimeException("User with ID [%s] is not found.".formatted(id));
+                    return new UserNotFoundException(id);
                 });
     }
 
@@ -112,7 +100,6 @@ public class UserService implements UserDetailsService {
 
         if (user.getRole() == UserRole.ADMIN) {
             long adminCount = userRepository.countByRoleAndActiveTrue(UserRole.ADMIN);
-            log.debug("Current active admin count: {}", adminCount);
 
             if (adminCount <= 1) {
                 log.warn("Attempted to remove role ADMIN from the last active admin (user {}).", id);
@@ -135,14 +122,12 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("Loading user details for authentication: {}", username);
 
-        ServletRequestAttributes servletRequestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession currentSession = servletRequestAttributes.getRequest().getSession(true);
-
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
                     log.warn("Authentication failed. Username {} not found.", username);
-                    return new UsernameNotFoundException("Username [%s] is not found.".formatted(username));
+                    return new UsernameNotFoundException(
+                            "Username [%s] is not found.".formatted(username)
+                    );
                 });
 
         log.info("User {} authenticated successfully (ID: {}, role: {}, active: {}).",
@@ -159,7 +144,6 @@ public class UserService implements UserDetailsService {
 
         if (user.getRole() == UserRole.ADMIN && user.isActive()) {
             long activeAdminCount = userRepository.countByRoleAndActiveTrue(UserRole.ADMIN);
-            log.debug("Active admin count before deactivation attempt: {}", activeAdminCount);
 
             if (activeAdminCount <= 1) {
                 log.warn("Attempt to deactivate last active admin (user {}). Operation blocked.", userId);
@@ -172,11 +156,5 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         log.info("User {} is now {}", userId, user.isActive() ? "ACTIVE" : "INACTIVE");
-    }
-
-    private long getAdminCount() {
-        long count = userRepository.countByRoleAndActiveTrue(UserRole.ADMIN);
-        log.debug("Current active admin count: {}", count);
-        return count;
     }
 }

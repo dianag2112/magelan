@@ -107,7 +107,7 @@
                         <td th:text="${#temporals.format(b.date, 'dd.MM.yyyy')}">01.01.2025</td>
                         <td th:text="${b.time}">19:00</td>
                         <td th:text="${b.guests}">2</td>
-                        <td th:text="${b.notes} ?: '-'">Anniversary</td>
+                        <td th:text="${b.notes ?: '-'}">Anniversary</td>
                         <td th:text="${b.status}">PENDING</td>
                     </tr>
                     </tbody>
@@ -134,7 +134,7 @@
                         <td th:text="${#temporals.format(b.date, 'dd.MM.yyyy')}">01.01.2025</td>
                         <td th:text="${b.time}">19:00</td>
                         <td th:text="${b.guests}">2</td>
-                        <td th:text="${b.notes} ?: '-'">Anniversary</td>
+                        <td th:text="${b.notes ?: '-'}">Anniversary</td>
                         <td th:text="${b.status}">PENDING</td>
                     </tr>
                     </tbody>

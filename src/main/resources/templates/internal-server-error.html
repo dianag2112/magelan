@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Error — Magelan</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css">
+    <link rel="stylesheet" th:href="@{/home.css}" href="/home.css">
+    <link rel="stylesheet" th:href="@{/admin-panel.css}" href="/admin-panel.css">
+</head>
+<body>
+<div class="container home-center">
+
+    <div class="logo-container">
+        <a th:href="@{/home}">
+            <img src="/magelan-index.jpg" alt="Magelan Logo" class="logo-image">
+        </a>
+    </div>
+
+    <section class="panel">
+        <h1 class="title">Something went wrong</h1>
+
+        <p class="subtitle">
+            Our crew sailed into a stormy sea. The tavern is still here, but this action failed.
+        </p>
+
+        <p class="small" th:if="${errorMessage}">
+            <strong>Technical detail:</strong>
+            <span th:text="${errorMessage}">ExceptionName</span>
+        </p>
+
+        <div class="admin-actions" style="margin-top: 20px;">
+            <a th:href="@{/home}" class="btn-secondary">Back to Home</a>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

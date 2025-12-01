@@ -1,22 +1,22 @@
 package bg.softuni.magelan.order.service;
 
+import bg.softuni.magelan.exception.OrderNotFoundException;
 import bg.softuni.magelan.payment.PaymentClient;
 import bg.softuni.magelan.payment.PaymentRequest;
 import bg.softuni.magelan.payment.PaymentResponse;
-import bg.softuni.magelan.product.service.ProductService;
-import feign.FeignException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import bg.softuni.magelan.product.model.Product;
+import bg.softuni.magelan.product.repository.ProductRepository;
 import bg.softuni.magelan.order.model.Order;
 import bg.softuni.magelan.order.model.OrderItem;
 import bg.softuni.magelan.order.model.OrderStatus;
 import bg.softuni.magelan.order.repository.OrderItemRepository;
 import bg.softuni.magelan.order.repository.OrderRepository;
+import bg.softuni.magelan.user.model.User;
+import feign.FeignException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import bg.softuni.magelan.product.model.Product;
-import bg.softuni.magelan.product.repository.ProductRepository;
-import bg.softuni.magelan.user.model.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,20 +33,16 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
     private final PaymentClient paymentClient;
-    private final ProductService productService;
 
     public Optional<Order> findPendingOrderByCustomerId(UUID customerId) {
-        log.debug("Looking for pending order for customer {}", customerId);
         return orderRepository.findByOrderStatusAndCustomer_Id(OrderStatus.PENDING, customerId);
     }
 
     public List<Product> getAvailableProducts() {
-        log.debug("Fetching all active products to show in menu");
         return productRepository.findAllByActiveTrueOrderByNameAsc();
     }
 
     public List<Order> getOrdersByStatus(OrderStatus status) {
-        log.debug("Fetching orders with status {}", status);
         return orderRepository.findAllByOrderStatusOrderByCreatedOnDesc(status);
     }
 
@@ -109,7 +105,7 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> {
                     log.warn("Order {} not found when trying to add product {}", orderId, productId);
-                    return new IllegalArgumentException("Order not found");
+                    return new OrderNotFoundException(orderId);
                 });
 
         Product product = productRepository.findByIdAndActiveTrue(productId)
@@ -214,8 +210,7 @@ public class OrderService {
         if (order.getPaymentId() != null) {
             log.info("Order {} already has payment {}. Fetching existing payment.",
                     order.getId(), order.getPaymentId());
-            PaymentResponse existing = paymentClient.getPaymentById(order.getPaymentId());
-            return existing;
+            return paymentClient.getPaymentById(order.getPaymentId());
         }
 
         PaymentRequest request = PaymentRequest.builder()
@@ -257,7 +252,7 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> {
                     log.warn("Order {} not found for admin status change to {}", orderId, targetStatus);
-                    return new IllegalArgumentException("Order not found");
+                    return new OrderNotFoundException(orderId);
                 });
 
         OrderStatus current = order.getOrderStatus();
@@ -294,7 +289,6 @@ public class OrderService {
     }
 
     public List<Order> getPastOrders(UUID customerId) {
-        log.debug("Fetching past (non-pending) orders for customer {}", customerId);
         return orderRepository.findAllByCustomer_IdAndOrderStatusNotOrderByCreatedOnDesc(
                 customerId,
                 OrderStatus.PENDING
@@ -302,11 +296,10 @@ public class OrderService {
     }
 
     public Order getOrderById(UUID orderId) {
-        log.debug("Fetching order by id {}", orderId);
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> {
                     log.warn("Order {} not found when fetching details", orderId);
-                    return new IllegalArgumentException("Order not found");
+                    return new OrderNotFoundException(orderId);
                 });
     }
 
@@ -339,12 +332,10 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public PaymentResponse getPaymentById(UUID paymentId) {
-        log.debug("Fetching payment {} via payment-svc", paymentId);
         return paymentClient.getPaymentById(paymentId);
     }
 
     public PaymentResponse getPaymentForOrder(UUID orderId) {
-        log.debug("Fetching payment for order {}", orderId);
         try {
             return paymentClient.getPaymentByOrderId(orderId);
         } catch (FeignException.NotFound e) {
@@ -360,7 +351,7 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> {
                     log.warn("Order {} not found for user {} when trying to cancel", orderId, userId);
-                    return new IllegalArgumentException("Order not found");
+                    return new OrderNotFoundException(orderId);
                 });
 
         if (!order.getCustomer().getId().equals(userId)) {

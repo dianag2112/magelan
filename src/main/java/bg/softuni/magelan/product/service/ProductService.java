@@ -1,11 +1,11 @@
 package bg.softuni.magelan.product.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import bg.softuni.magelan.product.model.Product;
 import bg.softuni.magelan.product.model.ProductCategory;
 import bg.softuni.magelan.product.repository.ProductRepository;
 import bg.softuni.magelan.web.dto.ProductForm;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,23 +16,20 @@ import java.util.UUID;
 public class ProductService {
 
     private final ProductRepository productRepository;
+
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     public List<Product> getByCategory(ProductCategory category) {
-        log.debug("Fetching products in category {}", category);
         return productRepository.findAllByCategoryOrderByNameAsc(category);
     }
 
     public List<Product> getAll() {
-        log.debug("Fetching all products (including inactive).");
         return productRepository.findAll();
     }
 
     public Product getById(UUID id) {
-        log.debug("Fetching product with ID {}", id);
-
         return productRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Product with ID {} not found.", id);
@@ -81,13 +78,11 @@ public class ProductService {
     }
 
     public void delete(UUID id) {
-            log.info("Hard deleting product {}", id);
-            productRepository.deleteById(id);
-        }
+        log.info("Hard deleting product {}", id);
+        productRepository.deleteById(id);
+    }
 
     public ProductForm toForm(Product product) {
-        log.debug("Converting product {} to ProductForm DTO", product.getId());
-
         return ProductForm.builder()
                 .id(product.getId().toString())
                 .name(product.getName())

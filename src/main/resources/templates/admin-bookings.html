@@ -53,7 +53,7 @@
                         <td th:text="${b.guests}">2</td>
                         <td th:text="${b.customer.firstName + ' ' + b.customer.lastName}">Name</td>
                         <td th:text="${b.phone}">+359...</td>
-                        <td th:text="${b.notes} ?: '-'">Some notes</td>
+                        <td th:text="${b.notes ?: '-'}">Some notes</td>
                         <td th:text="${b.status}">PENDING</td>
                         <td class="col-right">
                             <div class="action-buttons">
@@ -106,7 +106,7 @@
                         <td th:text="${b.guests}">2</td>
                         <td th:text="${b.customer.firstName + ' ' + b.customer.lastName}">Name</td>
                         <td th:text="${b.phone}">+359...</td>
-                        <td th:text="${b.notes} ?: '-'">Some notes</td>
+                        <td th:text="${b.notes ?: '-'}">Some notes</td>
                         <td th:text="${b.status}">PENDING</td>
                     </tr>
                     </tbody>
@@ -115,8 +115,8 @@
         </div>
 
         <div class="empty"
-             th:if="(upcomingBookings == null or #lists.isEmpty(upcomingBookings))
-                 and (pastBookings == null or #lists.isEmpty(pastBookings))">
+             th:if="${(upcomingBookings == null or #lists.isEmpty(upcomingBookings))
+                 and (pastBookings == null or #lists.isEmpty(pastBookings))}">
             <p>No bookings yet.</p>
         </div>
 

@@ -3,6 +3,7 @@ package bg.softuni.magelan.booking.service;
 import bg.softuni.magelan.booking.model.Booking;
 import bg.softuni.magelan.booking.model.BookingStatus;
 import bg.softuni.magelan.booking.repository.BookingRepository;
+import bg.softuni.magelan.exception.BookingNotFoundException;
 import bg.softuni.magelan.user.model.User;
 import bg.softuni.magelan.web.dto.BookTableRequest;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,6 @@ public class BookingService {
     @Transactional(readOnly = true)
     public List<Booking> getUpcomingBookings(UUID userId) {
         LocalDate today = LocalDate.now();
-        log.debug("Fetching upcoming bookings for user {} from {}", userId, today);
         return bookingRepository
                 .findAllByCustomer_IdAndDateGreaterThanEqualOrderByDateAscTimeAsc(userId, today);
     }
@@ -52,7 +52,6 @@ public class BookingService {
     @Transactional(readOnly = true)
     public List<Booking> getPastBookingsForUser(UUID userId) {
         LocalDate today = LocalDate.now();
-        log.debug("Fetching past bookings for user {} until {}", userId, today);
         return bookingRepository
                 .findAllByCustomer_IdAndDateLessThanOrderByDateDesc(userId, today);
     }
@@ -70,6 +69,7 @@ public class BookingService {
         return bookingRepository
                 .findAllByDateLessThanOrderByDateDescTimeDesc(today);
     }
+
     @Transactional(readOnly = true)
     public List<Booking> getAllBookings() {
         return bookingRepository.findAllByOrderByDateAscTimeAsc();
@@ -77,10 +77,14 @@ public class BookingService {
 
     @Transactional
     public void changeStatus(UUID bookingId, BookingStatus status) {
+        log.info("Changing status of booking {} to {}", bookingId, status);
+
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+                .orElseThrow(() -> new BookingNotFoundException(bookingId));
 
         booking.setStatus(status);
         bookingRepository.save(booking);
+
+        log.info("Booking {} status changed to {}", bookingId, status);
     }
 }
