@@ -1,6 +1,5 @@
 package bg.softuni.magelan.web;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import bg.softuni.magelan.product.service.ProductService;
 import bg.softuni.magelan.security.UserData;
 import bg.softuni.magelan.user.model.User;
 import bg.softuni.magelan.user.service.UserService;
@@ -23,12 +21,10 @@ import bg.softuni.magelan.web.dto.RegisterRequest;
 public class IndexController {
 
     private final UserService userService;
-    private final ProductService productService;
 
     @Autowired
-    public IndexController(UserService userService, ProductService productService) {
+    public IndexController(UserService userService) {
         this.userService = userService;
-        this.productService = productService;
     }
 
     @GetMapping("/")
@@ -39,8 +35,8 @@ public class IndexController {
     @GetMapping("/login")
     public ModelAndView getLoginPage(
             @RequestParam(value = "loginAttemptMessage", required = false) String message,
-            @RequestParam(value = "error", required = false) String error,
-            HttpSession session) {
+            @RequestParam(value = "error", required = false)
+            String error) {
 
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("loginRequest", new LoginRequest());

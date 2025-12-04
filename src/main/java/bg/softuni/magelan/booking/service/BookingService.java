@@ -24,7 +24,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
 
     @Transactional
-    public Booking createBooking(User customer, BookTableRequest request) {
+    public void createBooking(User customer, BookTableRequest request) {
         log.info("Creating booking for user {} on {} at {} for {} guests",
                 customer.getUsername(), request.getDate(), request.getTime(), request.getGuests());
 
@@ -39,7 +39,7 @@ public class BookingService {
                 .createdOn(LocalDateTime.now())
                 .build();
 
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
     }
 
     @Transactional(readOnly = true)

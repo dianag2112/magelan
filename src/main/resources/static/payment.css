@@ -185,3 +185,8 @@ body.payment-body {
         text-align: left;
     }
 }
+
+.payment-message.error {
+    color: #ff5252;
+    font-weight: 500;
+}

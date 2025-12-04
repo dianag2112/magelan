@@ -144,10 +144,10 @@ public class OrderController {
 
         PaymentResponse payment = orderService.getPaymentById(paymentId);
 
-        ModelAndView mav = new ModelAndView("payment");
-        mav.addObject("payment", payment);
-        mav.addObject("isAuthenticated", userData != null);
-        return mav;
+        ModelAndView modelAndView = new ModelAndView("payment");
+        modelAndView.addObject("payment", payment);
+        modelAndView.addObject("isAuthenticated", userData != null);
+        return modelAndView;
     }
 
     @PostMapping("/payment/{paymentId}/process")

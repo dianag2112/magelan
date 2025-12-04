@@ -45,12 +45,12 @@ public class AdminOrderController {
         Order order = orderService.getOrderById(orderId);
         PaymentResponse payment = orderService.getPaymentForOrder(orderId);
 
-        ModelAndView mav = new ModelAndView("admin-order-details");
-        mav.addObject("order", order);
-        mav.addObject("payment", payment);
-        mav.addObject("message", message);
-        mav.addObject("error", error);
-        return mav;
+        ModelAndView modelAndView = new ModelAndView("admin-order-details");
+        modelAndView.addObject("order", order);
+        modelAndView.addObject("payment", payment);
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("error", error);
+        return modelAndView;
     }
 
 

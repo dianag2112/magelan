@@ -21,7 +21,6 @@
     <section class="panel payment-panel">
         <h1 class="title">Payment</h1>
 
-        <!-- If payment is missing -->
         <div th:if="${payment == null}" class="empty">
             <p>Payment information could not be found.</p>
             <div class="payment-actions">
@@ -29,7 +28,6 @@
             </div>
         </div>
 
-        <!-- If payment is present -->
         <div th:if="${payment != null}">
             <div class="payment-summary">
                 <p>
@@ -69,8 +67,12 @@
                 </p>
             </div>
 
-            <div class="payment-message" th:if="${payment.status != 'SUCCESSFUL'}">
+            <div class="payment-message" th:if="${payment.status == 'PENDING'}">
                 <p>Please confirm your payment to complete the order.</p>
+            </div>
+
+            <div class="payment-message error" th:if="${payment.status == 'FAILED'}">
+                <p>This payment has expired or failed. You can cancel the order and create a new one.</p>
             </div>
 
             <div class="payment-message success" th:if="${payment.status == 'SUCCESSFUL'}">
@@ -78,7 +80,7 @@
             </div>
 
             <div class="payment-actions">
-                <form th:if="${payment.status != 'SUCCESSFUL'}"
+                <form th:if="${payment.status == 'PENDING'}"
                       th:action="@{|/orders/payment/${payment.id}/process|}"
                       method="post" class="inline-form">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

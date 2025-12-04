@@ -7,7 +7,6 @@ import bg.softuni.magelan.user.model.UserRole;
 import bg.softuni.magelan.user.repository.UserRepository;
 import bg.softuni.magelan.web.dto.EditProfileRequest;
 import bg.softuni.magelan.web.dto.RegisterRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,7 +38,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     @CacheEvict(value = "users", allEntries = true)
-    public User register(RegisterRequest registerRequest) {
+    public void register(RegisterRequest registerRequest) {
         log.info("Registering new user with username {}", registerRequest.getUsername());
 
         User user = User.builder()
@@ -57,7 +54,6 @@ public class UserService implements UserDetailsService {
 
         log.info("User {} registered successfully with ID {}",
                 registerRequest.getUsername(), user.getId());
-        return user;
     }
 
     @Cacheable("users")

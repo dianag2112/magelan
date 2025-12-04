@@ -23,10 +23,10 @@ public class AdminBookingController {
 
     @GetMapping
     public ModelAndView getBookingsPage() {
-        ModelAndView mav = new ModelAndView("admin-bookings");
-        mav.addObject("upcomingBookings", bookingService.getUpcomingBookingsForAdmin());
-        mav.addObject("pastBookings", bookingService.getPastBookingsForAdmin());
-        return mav;
+        ModelAndView modelAndView = new ModelAndView("admin-bookings");
+        modelAndView.addObject("upcomingBookings", bookingService.getUpcomingBookingsForAdmin());
+        modelAndView.addObject("pastBookings", bookingService.getPastBookingsForAdmin());
+        return modelAndView;
     }
 
     @GetMapping("/search")
@@ -35,11 +35,11 @@ public class AdminBookingController {
 
         List<Booking> bookings = bookingService.getAllBookings();
 
-        ModelAndView mav = new ModelAndView("admin-bookings");
-        mav.addObject("bookings", bookings);
-        mav.addObject("message", message);
-        mav.addObject("error", error);
-        return mav;
+        ModelAndView modelAndView = new ModelAndView("admin-bookings");
+        modelAndView.addObject("bookings", bookings);
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("error", error);
+        return modelAndView;
     }
 
     @PostMapping("{id}/status")
