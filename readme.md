@@ -106,9 +106,3 @@ Order receipts generated with **OpenPDF**.
 
 ---
 
-## ▶️ Running the Application
-
-### **1️⃣ Clone the repository**
-```bash
-git clone https://github.com/your-username/magelan.git
-cd magelan
