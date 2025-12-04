@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableCaching
 @SpringBootApplication
-@EnableFeignClients(basePackages = "bg.softuni.magelan.payment")
+@EnableFeignClients
 public class MagelanApplication {
 
     public static void main(String[] args) {
