@@ -2,9 +2,14 @@ package bg.softuni.magelan.web;
 
 import bg.softuni.magelan.order.model.Order;
 import bg.softuni.magelan.order.service.OrderService;
+import bg.softuni.magelan.order.service.ReceiptService;
 import bg.softuni.magelan.product.service.ProductService;
 import bg.softuni.magelan.payment.PaymentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +29,17 @@ public class OrderController {
     private final UserService userService;
     private final OrderService orderService;
     private final ProductService productService;
+    private final ReceiptService receiptService;
 
     @Autowired
     public OrderController(UserService userService,
                            OrderService orderService,
-                           ProductService productService) {
+                           ProductService productService,
+                           ReceiptService receiptService) {
         this.userService = userService;
         this.orderService = orderService;
         this.productService = productService;
+        this.receiptService = receiptService;
     }
 
     @GetMapping
@@ -206,5 +214,26 @@ public class OrderController {
         redirectAttributes.addFlashAttribute("orderMessage", "Order has been cancelled.");
 
         return "redirect:/orders";
+    }
+
+    @ResponseBody
+    @GetMapping("/{orderId}/receipt")
+    public ResponseEntity<byte[]> downloadReceipt(@PathVariable UUID orderId,
+                                                  @AuthenticationPrincipal UserData userData) {
+
+        Order order = orderService.getOrderById(orderId);
+
+        if (!order.getCustomer().getId().equals(userData.getUserId())
+                && !userData.getRole().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        byte[] pdf = receiptService.generateReceiptPdf(order);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=receipt-" + orderId + ".pdf")
+                .body(pdf);
     }
 }

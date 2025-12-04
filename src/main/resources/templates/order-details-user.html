@@ -107,6 +107,12 @@
         <div class="admin-actions" style="justify-content: space-between; margin-top: 20px;">
             <a th:href="@{/orders}" class="btn-secondary">Back to My Orders</a>
         </div>
+        <div>
+            <a th:href="@{/orders/{id}/receipt(id=${order.id})}"
+               class="download-btn">
+                Download Receipt (PDF)
+            </a>
+        </div>
     </section>
 </div>
 </body>
