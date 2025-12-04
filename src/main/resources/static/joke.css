@@ -1,6 +1,3 @@
-/* Extra styling on top of styles.css + home.css */
-
-/* Wrapper inside the panel */
 .joke-wrapper {
     margin-top: 20px;
     padding: 24px 20px;
@@ -9,19 +6,16 @@
     background: rgba(0, 0, 0, 0.7);
 }
 
-/* Joke text */
 .joke-text {
     font-size: 1.4rem;
     line-height: 1.6;
     margin-bottom: 24px;
 }
 
-/* Reuse .btn look but allow specific tweaks if needed */
 .joke-btn {
     margin-bottom: 16px;
 }
 
-/* Links under the joke */
 .joke-links {
     margin-top: 8px;
     font-size: 0.95rem;

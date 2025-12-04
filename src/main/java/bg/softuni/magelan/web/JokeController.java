@@ -1,6 +1,5 @@
 package bg.softuni.magelan.web;
 
-import bg.softuni.magelan.external.JokeResponse;
 import bg.softuni.magelan.external.JokeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
