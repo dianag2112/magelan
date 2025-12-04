@@ -168,3 +168,24 @@ body {
         width: 220px;
     }
 }
+
+.btn-red {
+    background: #ff0000;
+    color: white;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: 'Pirata One', cursive;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.35);
+}
+
+.btn-red:hover {
+    background: #cc0000;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.45);
+}

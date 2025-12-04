@@ -1,0 +1,38 @@
+/* Extra styling on top of styles.css + home.css */
+
+/* Wrapper inside the panel */
+.joke-wrapper {
+    margin-top: 20px;
+    padding: 24px 20px;
+    border-radius: 10px;
+    border: 1px solid #ff0000;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Joke text */
+.joke-text {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Reuse .btn look but allow specific tweaks if needed */
+.joke-btn {
+    margin-bottom: 16px;
+}
+
+/* Links under the joke */
+.joke-links {
+    margin-top: 8px;
+    font-size: 0.95rem;
+}
+
+.joke-links a {
+    color: #ffaaaa;
+    text-decoration: none;
+}
+
+.joke-links a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
