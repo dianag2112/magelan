@@ -1,6 +1,7 @@
 package bg.softuni.magelan.order.service;
 
 import bg.softuni.magelan.exception.OrderNotFoundException;
+import bg.softuni.magelan.order.event.OrderSubmittedEvent;
 import bg.softuni.magelan.payment.PaymentClient;
 import bg.softuni.magelan.payment.PaymentRequest;
 import bg.softuni.magelan.payment.PaymentResponse;
@@ -15,6 +16,7 @@ import bg.softuni.magelan.user.model.User;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
     private final PaymentClient paymentClient;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Optional<Order> findPendingOrderByCustomerId(UUID customerId) {
         return orderRepository.findByOrderStatusAndCustomer_Id(OrderStatus.PENDING, customerId);
@@ -321,6 +324,16 @@ public class OrderService {
             log.info("Payment {} SUCCESSFUL – setting order {} status to SUBMITTED",
                     paymentId, order.getId());
             order.setOrderStatus(OrderStatus.SUBMITTED);
+
+            applicationEventPublisher.publishEvent(
+                    new OrderSubmittedEvent(
+                            order.getId(),
+                            order.getCustomer().getId(),
+                            order.getAmount(),
+                            order.getCreatedOn()
+                    )
+            );
+            log.info("OrderSubmittedEvent published for order {}", order.getId());
         } else {
             log.warn("Payment {} processed with status {} – order {} will stay in status {}",
                     paymentId, updated.getStatus(), order.getId(), order.getOrderStatus());
